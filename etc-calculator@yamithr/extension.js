@@ -1,7 +1,10 @@
-const { St, Clutter, GObject } = imports.gi;
-const Main = imports.ui.main;
-const PanelMenu = imports.ui.panelMenu;
-const PopupMenu = imports.ui.popupMenu;
+import St from 'gi://St';
+import Clutter from 'gi://Clutter';
+import GObject from 'gi://GObject';
+import * as Main from 'resource:///org/gnome/shell/ui/main.js';
+import * as PanelMenu from 'resource:///org/gnome/shell/ui/panelMenu.js';
+import * as PopupMenu from 'resource:///org/gnome/shell/ui/popupMenu.js';
+import { Extension } from 'resource:///org/gnome/shell/extensions/extension.js';
 
 const _months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 
@@ -41,8 +44,8 @@ const ETC_ITEMS      = ['Loading Time','Dead Time','Total Completion Time'];
 const INT_ITEMS      = ['Loading Time before Intermediate','Intermediate Waiting Time','Total Time to Intermediate'];
 const TIME_ITEMS     = ['Current Time','Estimated Intermediate Time','Estimated Unberthing Time','Underwater Inspection Time','ETC - Estimated Completion'];
 
-const EtcCalculator = GObject.registerClass(
-class EtcCalculator extends PanelMenu.Button {
+const EtcButton = GObject.registerClass(
+class EtcButton extends PanelMenu.Button {
   _init() {
     super._init(0.0, 'ETC Calculator');
 
@@ -95,8 +98,7 @@ class EtcCalculator extends PanelMenu.Button {
     this._resultContainer = new St.BoxLayout({ vertical: true, visible: false });
 
     const secTitle = (text) => {
-      const t = new St.Label({ text: text, style_class: 'etc-section-title' });
-      return t;
+      return new St.Label({ text, style_class: 'etc-section-title' });
     };
 
     const makeSection = (items, store, highlightIdx) => {
@@ -251,19 +253,16 @@ class EtcCalculator extends PanelMenu.Button {
   }
 });
 
-let _indicator = null;
+export default class EtcCalculatorExtension extends Extension {
+  enable() {
+    this._indicator = new EtcButton();
+    Main.panel.addToStatusArea('etc-calculator-indicator', this._indicator, 1, 'right');
+  }
 
-function init() {
-}
-
-function enable() {
-  _indicator = new EtcCalculator();
-  Main.panel.addToStatusArea('etc-calculator-indicator', _indicator, 1, 'right');
-}
-
-function disable() {
-  if (_indicator) {
-    _indicator.destroy();
-    _indicator = null;
+  disable() {
+    if (this._indicator) {
+      this._indicator.destroy();
+      this._indicator = null;
+    }
   }
 }
