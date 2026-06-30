@@ -43,7 +43,7 @@ Este proyecto tiene **tres versiones** paralelas:
 # Enlazar la extensión
 ln -s "$PWD/etc-calculator@yamithr" ~/.local/share/gnome-shell/extensions/etc-calculator@yamithr
 
-# Reiniciar GNOME Shell (Alt+F2 → r, escribir 'r' y Enter)
+# Cerrar sesión y volver a iniciarla (requerido en Wayland)
 
 # Habilitar
 gnome-extensions enable etc-calculator@yamithr
@@ -56,9 +56,8 @@ Aparecerá un indicador **ETC** en el panel superior. Al hacer clic se despliega
 Los cambios en `extension.js` o `stylesheet.css` se aplican al recargar la extensión:
 
 ```bash
-# Recargar (Alt+F2 → r)
-# O deshabilitar/habilitar:
-gnome-extensions disable etc-calculator@yamithr && sleep 0.5 && gnome-extensions enable etc-calculator@yamithr
+# Recargar (deshabilitar/habilitar):
+gnome-extensions disable etc-calculator@yamithr && gnome-extensions enable etc-calculator@yamithr
 ```
 
 ### Logs
