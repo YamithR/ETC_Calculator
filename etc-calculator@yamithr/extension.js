@@ -132,10 +132,10 @@ class EtcButton extends PanelMenu.Button {
       hscrollbar_policy: St.PolicyType.NEVER,
       vscrollbar_policy: St.PolicyType.AUTOMATIC,
     });
-    scroll.add_actor(outerBox);
+    scroll.set_child(outerBox);
 
     const menuItem = new PopupMenu.PopupBaseMenuItem({ reactive: false, can_focus: false });
-    menuItem.actor.add(scroll);
+    menuItem.actor.add_child(scroll);
     this.menu.addMenuItem(menuItem);
   }
 
