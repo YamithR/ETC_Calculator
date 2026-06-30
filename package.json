@@ -1,0 +1,42 @@
+{
+  "name": "etc-calculator",
+  "version": "1.0.0",
+  "description": "Estimated Cargo Completion Time Calculator - Herramienta para calcular tiempos estimados de carga marítima",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "build:linux": "electron-builder --linux deb",
+    "build:win": "electron-builder --win"
+  },
+  "author": "Yamith Romero",
+  "license": "MIT",
+  "build": {
+    "appId": "com.yamithr.etc-calculator",
+    "productName": "ETC Calculator",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "index.html",
+      "main.js",
+      "preload.js"
+    ],
+    "linux": {
+      "target": [
+        "deb"
+      ],
+      "category": "Office",
+      "icon": "assets/icon.png"
+    },
+    "win": {
+      "target": [
+        "nsis"
+      ],
+      "icon": "assets/icon.png"
+    }
+  },
+  "devDependencies": {
+    "electron": "^35.7.5",
+    "electron-builder": "^25.1.8"
+  }
+}
