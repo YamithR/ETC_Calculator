@@ -1,0 +1,106 @@
+.etc-panel-btn {
+  padding: 0 10px;
+  font-weight: 700;
+  font-size: 11pt;
+  color: #ffffff;
+}
+.etc-panel-btn:hover {
+  background-color: rgba(255,255,255,0.12);
+}
+.etc-main-box {
+  background-color: #f5f0e8;
+  padding: 8px 14px 14px;
+  spacing: 0;
+}
+.etc-header-box {
+  background-color: #1a3a5c;
+  border-radius: 6px;
+  padding: 10px 14px;
+  margin-bottom: 10px;
+}
+.etc-header-title {
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 13pt;
+}
+.etc-header-sub {
+  color: rgba(255,255,255,0.75);
+  font-size: 9pt;
+}
+.etc-input-row {
+  spacing: 6px;
+  padding: 4px 0;
+}
+.etc-input-row StLabel {
+  color: #3a3a3a;
+  font-size: 10pt;
+  min-width: 150px;
+}
+.etc-input-row StEntry {
+  background-color: #ffffff;
+  border: 1px solid #cccccc;
+  border-radius: 4px;
+  color: #2c2c2c;
+  font-size: 10pt;
+  padding: 4px 8px;
+  caret-color: #1a3a5c;
+  selection-background-color: #1a3a5c;
+  selected-color: #ffffff;
+}
+.etc-input-row StEntry:focus {
+  border-color: #1a3a5c;
+}
+.etc-hint {
+  color: #999999;
+  font-size: 8pt;
+  padding: 0 0 4px 156px;
+}
+.etc-section-title {
+  color: #1a3a5c;
+  font-weight: 700;
+  font-size: 9pt;
+  letter-spacing: 1px;
+  padding: 8px 0 4px;
+  border-bottom: 2px solid #1a3a5c;
+  margin-top: 4px;
+}
+.etc-result-row {
+  spacing: 0;
+  padding: 3px 0;
+  border-bottom: 1px solid #e8e3db;
+}
+.etc-result-label {
+  color: #666666;
+  font-size: 9.5pt;
+}
+.etc-result-value {
+  color: #1a3a5c;
+  font-weight: 700;
+  font-size: 9.5pt;
+  text-align: right;
+}
+.etc-result-highlight {
+  background-color: #eef3f9;
+  border-radius: 4px;
+  padding: 4px 8px;
+  margin: 2px 0;
+}
+.etc-result-highlight .etc-result-value {
+  font-size: 10.5pt;
+}
+.etc-error {
+  color: #a00;
+  font-size: 9pt;
+  background-color: #fdecea;
+  border-left: 3px solid #d32f2f;
+  padding: 6px 10px;
+  border-radius: 3px;
+}
+.etc-warning {
+  color: #8d5a00;
+  font-size: 9pt;
+  background-color: #fff3e0;
+  border-left: 3px solid #f57c00;
+  padding: 6px 10px;
+  border-radius: 3px;
+}

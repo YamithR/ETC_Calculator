@@ -23,7 +23,53 @@ Descarga la última versión desde [Releases](https://github.com/YamithR/ETC_Cal
 | Linux (.deb) | `ETC_Calculator_x.x.x_amd64.deb` |
 | Windows (.exe) | `ETC_Calculator Setup x.x.x.exe` |
 
-## Desarrollo
+## Versiones
+
+Este proyecto tiene **tres versiones** paralelas:
+
+| Versión | Plataforma | Carpeta |
+|---------|-----------|---------|
+| 🌐 Web Prototype | Cualquier navegador | `index.html` |
+| 🖥️ Desktop (Electron) | Linux (.deb) / Windows (.exe) | `main.js` + `preload.js` + `package.json` |
+| 🧩 GNOME Shell Extension | Linux con GNOME 45+ | `etc-calculator@yamithr/` |
+
+---
+
+## GNOME Shell Extension
+
+### Instalación
+
+```bash
+# Enlazar la extensión
+ln -s "$PWD/etc-calculator@yamithr" ~/.local/share/gnome-shell/extensions/etc-calculator@yamithr
+
+# Reiniciar GNOME Shell (Alt+F2 → r, escribir 'r' y Enter)
+
+# Habilitar
+gnome-extensions enable etc-calculator@yamithr
+```
+
+Aparecerá un indicador **ETC** en el panel superior. Al hacer clic se despliega el calculador.
+
+### Desarrollo
+
+Los cambios en `extension.js` o `stylesheet.css` se aplican al recargar la extensión:
+
+```bash
+# Recargar (Alt+F2 → r)
+# O deshabilitar/habilitar:
+gnome-extensions disable etc-calculator@yamithr && sleep 0.5 && gnome-extensions enable etc-calculator@yamithr
+```
+
+### Logs
+
+```bash
+journalctl -f -o cat /usr/bin/gnome-shell
+```
+
+---
+
+## Desktop App (Electron)
 
 ### Requisitos
 
@@ -33,12 +79,10 @@ Descarga la última versión desde [Releases](https://github.com/YamithR/ETC_Cal
 ### Instalación
 
 ```bash
-git clone https://github.com/YamithR/ETC_Calculator.git
-cd ETC_Calculator
 npm install
 ```
 
-### Ejecutar en modo desarrollo
+### Ejecutar
 
 ```bash
 npm start
@@ -50,17 +94,19 @@ npm start
 # Linux (.deb)
 npm run build:linux
 
-# Windows (.exe) — requiere wine64
+# Windows (.exe)
 npm run build:win
 ```
 
 Los artefactos se generan en la carpeta `dist/`.
 
+---
+
 ## Tecnologías
 
-- [Electron](https://www.electronjs.org/) — Escritorio multiplataforma
-- HTML / CSS / JavaScript vanilla
-- [electron-builder](https://www.electron.build/) — Empaquetado
+- 🧩 **GNOME Shell Extension:** GJS + St (GNOME Shell Toolkit)
+- 🖥️ **Desktop:** [Electron](https://www.electronjs.org/) + [electron-builder](https://www.electron.build/)
+- 🌐 **Web:** HTML / CSS / JavaScript vanilla
 
 ## Licencia
 
