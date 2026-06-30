@@ -37,33 +37,82 @@ Este proyecto tiene **tres versiones** paralelas:
 
 ## GNOME Shell Extension
 
-### Instalación
+Añade un indicador **ETC** en el panel superior. Al hacer clic se despliega el calculador completo con todos los cálculos en tiempo real.
+
+### Requisitos
+
+- **GNOME Shell 45, 46, 47 o 48** (comprobar con `gnome-shell --version`)
+- Linux con sesión **Wayland** o **Xorg**
+
+### Instalación (paso a paso)
+
+**Paso 1 — Clonar el repositorio** (si no lo tienes ya):
 
 ```bash
-# Enlazar la extensión
-ln -s "$PWD/etc-calculator@yamithr" ~/.local/share/gnome-shell/extensions/etc-calculator@yamithr
+git clone https://github.com/YamithR/ETC_Calculator.git
+cd ETC_Calculator
+```
 
-# Cerrar sesión y volver a iniciarla (requerido en Wayland)
+**Paso 2 — Crear el enlace simbólico** a la carpeta de extensiones de GNOME:
 
-# Habilitar
+```bash
+ln -sfn "$PWD/etc-calculator@yamithr" ~/.local/share/gnome-shell/extensions/etc-calculator@yamithr
+```
+
+Verifica que el enlace sea correcto:
+
+```bash
+ls -la ~/.local/share/gnome-shell/extensions/etc-calculator@yamithr/
+# Debe mostrar: ... -> /ruta/completa/ETC_Calculator/etc-calculator@yamithr
+# Y dentro debe aparecer: extension.js  metadata.json  stylesheet.css
+```
+
+**Paso 3 — Cerrar sesión y volver a iniciarla**
+
+En **Wayland** (el más común en GNOME moderno) no se puede reiniciar el shell. Debes cerrar sesión y volver a entrar para que GNOME detecte la nueva extensión.
+
+**Paso 4 — Habilitar la extensión**
+
+Una vez que hayas iniciado sesión de nuevo, abre una terminal y ejecuta:
+
+```bash
 gnome-extensions enable etc-calculator@yamithr
 ```
 
-Aparecerá un indicador **ETC** en el panel superior. Al hacer clic se despliega el calculador.
+Si el comando no devuelve error, la extensión está activada.
 
-### Desarrollo
+**Paso 5 — Verificar que funciona**
 
-Los cambios en `extension.js` o `stylesheet.css` se aplican al recargar la extensión:
+Busca el indicador **ETC** en el panel superior (esquina superior derecha, junto al reloj). Haz clic para abrir el calculador.
+
+Si no ves el indicador, comprueba los logs:
 
 ```bash
-# Recargar (deshabilitar/habilitar):
-gnome-extensions disable etc-calculator@yamithr && gnome-extensions enable etc-calculator@yamithr
+journalctl -o cat /usr/bin/gnome-shell --since "5 min ago" | grep -i "etc"
 ```
 
-### Logs
+### Solución de problemas
+
+| Problema | Causa probable | Solución |
+|----------|---------------|----------|
+| No aparece **ETC** en el panel | El enlace simbólico apunta a la ruta incorrecta | Repite el Paso 2 con `ln -sfn RUTA_CORRECTA` |
+| La extensión no se encuentra | No reiniciaste sesión después de crear el enlace | Cierra sesión y vuelve a entrar (Paso 3) |
+| `gnome-extensions enable` falla | El UUID de `metadata.json` no coincide con el nombre de la carpeta | Verifica que la carpeta se llame exactamente `etc-calculator@yamithr` |
+| Error en logs: `Requiring St, version none` | GNOME Shell no pudo cargar la extensión | Revisa `journalctl` para ver el error completo y repórtalo |
+
+### Desarrollo (después de la instalación inicial)
+
+Cuando edites `extension.js` o `stylesheet.css`, recarga la extensión sin reiniciar sesión:
 
 ```bash
-journalctl -f -o cat /usr/bin/gnome-shell
+gnome-extensions disable etc-calculator@yamithr
+gnome-extensions enable etc-calculator@yamithr
+```
+
+Para ver errores de JavaScript en tiempo real:
+
+```bash
+journalctl -o cat /usr/bin/gnome-shell -f
 ```
 
 ---

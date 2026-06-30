@@ -41,21 +41,19 @@ const ETC_ITEMS      = ['Loading Time','Dead Time','Total Completion Time'];
 const INT_ITEMS      = ['Loading Time before Intermediate','Intermediate Waiting Time','Total Time to Intermediate'];
 const TIME_ITEMS     = ['Current Time','Estimated Intermediate Time','Estimated Unberthing Time','Underwater Inspection Time','ETC - Estimated Completion'];
 
-const EtcButton = GObject.registerClass(
-class EtcButton extends PanelMenu.Button {
+const EtcCalculator = GObject.registerClass(
+class EtcCalculator extends PanelMenu.Button {
   _init() {
-    super._init(0.0, 'ETC Calculator', true);
+    super._init(0.0, 'ETC Calculator');
 
     const label = new St.Label({ text: 'ETC', y_align: Clutter.ActorAlign.CENTER, style_class: 'etc-panel-btn' });
     this.add_child(label);
 
-    this._active = false;
     this._entries = {};
     this._sections = { summary: [], etc: [], int: [], time: [] };
     this._errorLabel = null;
     this._warningLabel = null;
     this._resultContainer = null;
-    this._placeholderLabel = null;
 
     this.menu.connect('open-state-changed', (menu, open) => {
       if (open) this._calculate();
@@ -102,7 +100,6 @@ class EtcButton extends PanelMenu.Button {
     };
 
     const makeSection = (items, store, highlightIdx) => {
-      const resultRows = [];
       items.forEach((item, i) => {
         const extra = i === highlightIdx ? ' etc-result-highlight' : '';
         const box = new St.BoxLayout({ style_class: 'etc-result-row' + extra });
@@ -111,9 +108,8 @@ class EtcButton extends PanelMenu.Button {
         box.add_child(lw);
         box.add_child(vw);
         this._resultContainer.add_child(box);
-        resultRows.push({ box, label: lw, value: vw, item });
+        store.push({ box, label: lw, value: vw });
       });
-      store.push(...resultRows);
     };
 
     this._resultContainer.add_child(secTitle('INPUT SUMMARY'));
@@ -139,10 +135,6 @@ class EtcButton extends PanelMenu.Button {
     const menuItem = new PopupMenu.PopupBaseMenuItem({ reactive: false, can_focus: false });
     menuItem.actor.add(scroll);
     this.menu.addMenuItem(menuItem);
-  }
-
-  _setRowValue(rowStore, value) {
-    rowStore.value.set_text(value);
   }
 
   _setSectionValues(store, values) {
@@ -205,7 +197,7 @@ class EtcButton extends PanelMenu.Button {
 
     const cargoBeforeIntermediate = totalCargo - trimmingCargo;
     if (cargoBeforeIntermediate < loadedCargo) {
-      this._warningLabel.text = 'Warning: Intermediate point already passed.\nCargo before Intermediate: ' + fmt(cargoBeforeIntermediate) + ' MT  |  Current Loaded: ' + fmt(loadedCargo) + ' MT';
+      this._warningLabel.text = 'Warning: Intermediate point already passed.\nCargo before Int.: ' + fmt(cargoBeforeIntermediate) + ' MT  |  Loaded: ' + fmt(loadedCargo) + ' MT';
       this._warningLabel.show();
       this._resultContainer.hide();
       return;
@@ -265,7 +257,7 @@ function init() {
 }
 
 function enable() {
-  _indicator = new EtcButton();
+  _indicator = new EtcCalculator();
   Main.panel.addToStatusArea('etc-calculator-indicator', _indicator, 1, 'right');
 }
 
