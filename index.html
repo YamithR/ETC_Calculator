@@ -23,12 +23,12 @@
   }
   .container {
     width: 100%;
-    max-width: 720px;
+    max-width: 1100px;
   }
   header {
     background: #1a3a5c;
     color: #fff;
-    padding: 1.5rem 2rem;
+    padding: 1.25rem 2rem;
     border-radius: 8px;
     margin-bottom: 1.5rem;
     text-align: center;
@@ -43,10 +43,23 @@
     opacity: 0.8;
     margin-top: 0.25rem;
   }
+  .layout {
+    display: flex;
+    gap: 1.5rem;
+    align-items: flex-start;
+  }
+  .layout-left {
+    flex: 0 0 340px;
+    min-width: 280px;
+  }
+  .layout-right {
+    flex: 1;
+    min-width: 0;
+  }
   .card {
     background: #fff;
     border-radius: 8px;
-    padding: 1.5rem 2rem;
+    padding: 1.25rem 1.5rem;
     margin-bottom: 1rem;
     box-shadow: 0 1px 4px rgba(0,0,0,0.06);
   }
@@ -56,26 +69,26 @@
     text-transform: uppercase;
     letter-spacing: 1px;
     color: #1a3a5c;
-    margin-bottom: 1.25rem;
-    padding-bottom: 0.5rem;
+    margin-bottom: 1rem;
+    padding-bottom: 0.4rem;
     border-bottom: 2px solid #1a3a5c;
   }
   .form-row {
     display: flex;
     flex-direction: column;
-    gap: 0.25rem;
-    margin-bottom: 1rem;
+    gap: 0.2rem;
+    margin-bottom: 0.85rem;
   }
   .form-row label {
-    font-size: 0.875rem;
+    font-size: 0.8rem;
     font-weight: 500;
     color: #444;
   }
   .form-row input {
-    padding: 0.625rem 0.75rem;
+    padding: 0.5rem 0.65rem;
     border: 1px solid #ccc;
     border-radius: 4px;
-    font-size: 1rem;
+    font-size: 0.95rem;
     outline: none;
     transition: border-color 0.2s;
   }
@@ -84,39 +97,19 @@
     box-shadow: 0 0 0 2px rgba(26,58,92,0.15);
   }
   .hint {
-    font-size: 0.75rem;
-    color: #888;
-  }
-  .btn {
-    display: inline-block;
-    width: 100%;
-    padding: 0.75rem;
-    background: #1a3a5c;
-    color: #fff;
-    font-size: 1rem;
-    font-weight: 600;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background 0.2s;
-    margin-top: 0.5rem;
-  }
-  .btn:hover {
-    background: #234e78;
-  }
-  .btn:active {
-    background: #142c47;
+    font-size: 0.7rem;
+    color: #999;
   }
   .result-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 0.5rem 1.5rem;
+    gap: 0.3rem 1.25rem;
   }
   .result-item {
     display: flex;
     justify-content: space-between;
-    padding: 0.35rem 0;
-    font-size: 0.875rem;
+    padding: 0.3rem 0;
+    font-size: 0.825rem;
     border-bottom: 1px solid #f0ede8;
   }
   .result-item .label {
@@ -130,47 +123,56 @@
     grid-column: 1 / -1;
   }
   .result-item.highlight {
-    background: #f0f4f8;
-    padding: 0.5rem 0.75rem;
+    background: #eef3f9;
+    padding: 0.45rem 0.75rem;
     border-radius: 4px;
     border-bottom: none;
   }
   .result-item.highlight .value {
     color: #1a3a5c;
-    font-size: 1rem;
-  }
-  .warning {
-    background: #fff3e0;
-    border-left: 4px solid #f57c00;
-    padding: 0.75rem 1rem;
-    border-radius: 4px;
-    font-size: 0.875rem;
-    color: #8d5a00;
-    margin-bottom: 0.75rem;
+    font-size: 0.925rem;
   }
   .error-msg {
     background: #fdecea;
     border-left: 4px solid #d32f2f;
-    padding: 0.75rem 1rem;
+    padding: 0.65rem 1rem;
     border-radius: 4px;
-    font-size: 0.875rem;
+    font-size: 0.8rem;
     color: #a00;
     margin-bottom: 0.75rem;
     display: none;
   }
-  .results-section {
+  .warning {
+    background: #fff3e0;
+    border-left: 4px solid #f57c00;
+    padding: 0.65rem 1rem;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    color: #8d5a00;
+    margin-bottom: 0.75rem;
     display: none;
   }
   footer {
     text-align: center;
     font-size: 0.75rem;
     color: #999;
-    margin-top: 0.5rem;
     padding: 1rem 0;
+    margin-top: 0.5rem;
   }
-  @media (max-width: 600px) {
+  .results-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 300px;
+    color: #bbb;
+    font-size: 0.9rem;
+    text-align: center;
+  }
+  @media (max-width: 800px) {
     body { padding: 1rem 0.75rem; }
-    .card { padding: 1rem 1.25rem; }
+    .layout { flex-direction: column; }
+    .layout-left { flex: none; width: 100%; min-width: 0; }
+    .card { padding: 1rem 1.15rem; }
     header { padding: 1rem 1.25rem; }
     header h1 { font-size: 1.25rem; }
     .result-grid { grid-template-columns: 1fr; }
@@ -184,54 +186,62 @@
     <p>Estimated Cargo Completion Time</p>
   </header>
 
-  <div class="card">
-    <div class="card-title">Input Parameters</div>
-    <div class="form-row">
-      <label for="totalCargo">Total Cargo (MT)</label>
-      <input type="text" id="totalCargo" placeholder="e.g. 50000 or 45000+5000">
-      <span class="hint">Supports math expressions: + - * / ( )</span>
-    </div>
-    <div class="form-row">
-      <label for="loadedCargo">Loaded Cargo (MT)</label>
-      <input type="text" id="loadedCargo" placeholder="e.g. 20000">
-    </div>
-    <div class="form-row">
-      <label for="trimmingCargo">Trimming Cargo (MT)</label>
-      <input type="text" id="trimmingCargo" placeholder="e.g. 5000">
-    </div>
-    <div class="form-row">
-      <label for="loadingRate">Loading Rate (MT/h)</label>
-      <input type="text" id="loadingRate" placeholder="e.g. 1500">
-    </div>
-    <div class="form-row">
-      <label for="stepsRemaining">Steps Remaining</label>
-      <input type="text" id="stepsRemaining" placeholder="e.g. 3">
-    </div>
-    <button class="btn" id="calculateBtn">Calculate ETC</button>
-  </div>
-
-  <div id="errorContainer" class="error-msg"></div>
-  <div id="warningContainer" class="warning" style="display:none;"></div>
-
-  <div id="resultsSection" class="results-section">
-    <div class="card">
-      <div class="card-title">Input Summary</div>
-      <div class="result-grid" id="inputSummary"></div>
+  <div class="layout">
+    <div class="layout-left">
+      <div class="card">
+        <div class="card-title">Input Parameters</div>
+        <div class="form-row">
+          <label for="totalCargo">Total Cargo (MT)</label>
+          <input type="text" id="totalCargo" placeholder="e.g. 50000 or 40000+10000">
+          <span class="hint">Math expressions: + - * / ( )</span>
+        </div>
+        <div class="form-row">
+          <label for="loadedCargo">Loaded Cargo (MT)</label>
+          <input type="text" id="loadedCargo" placeholder="e.g. 20000">
+        </div>
+        <div class="form-row">
+          <label for="trimmingCargo">Trimming Cargo (MT)</label>
+          <input type="text" id="trimmingCargo" placeholder="e.g. 5000">
+        </div>
+        <div class="form-row">
+          <label for="loadingRate">Loading Rate (MT/h)</label>
+          <input type="text" id="loadingRate" placeholder="e.g. 1500">
+        </div>
+        <div class="form-row">
+          <label for="stepsRemaining">Steps Remaining</label>
+          <input type="text" id="stepsRemaining" placeholder="e.g. 3">
+        </div>
+      </div>
     </div>
 
-    <div class="card">
-      <div class="card-title">Final ETC Calculation</div>
-      <div class="result-grid" id="etcCalculation"></div>
-    </div>
+    <div class="layout-right">
+      <div id="errorContainer" class="error-msg"></div>
+      <div id="warningContainer" class="warning"></div>
 
-    <div class="card">
-      <div class="card-title">Intermediate Calculation</div>
-      <div class="result-grid" id="intermediateCalc"></div>
-    </div>
+      <div id="resultsContainer">
+        <div class="results-placeholder" id="placeholder">
+          Enter values to see results
+        </div>
+      </div>
 
-    <div class="card">
-      <div class="card-title">Estimated Times</div>
-      <div class="result-grid" id="estimatedTimes"></div>
+      <div id="resultsCards" style="display:none;">
+        <div class="card">
+          <div class="card-title">Input Summary</div>
+          <div class="result-grid" id="inputSummary"></div>
+        </div>
+        <div class="card">
+          <div class="card-title">Final ETC Calculation</div>
+          <div class="result-grid" id="etcCalculation"></div>
+        </div>
+        <div class="card">
+          <div class="card-title">Intermediate Calculation</div>
+          <div class="result-grid" id="intermediateCalc"></div>
+        </div>
+        <div class="card">
+          <div class="card-title">Estimated Times</div>
+          <div class="result-grid" id="estimatedTimes"></div>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -256,14 +266,10 @@
     return num.toFixed(2);
   }
 
-  function pad(n) {
-    return String(n).padStart(2, '0');
-  }
-
   function formatDate(ts) {
     const d = new Date(ts);
     const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-    return pad(d.getHours()) + ':' + pad(d.getMinutes()) + ' / ' + pad(d.getDate()) + '-' + months[d.getMonth()] + '-' + d.getFullYear();
+    return String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0') + ' / ' + String(d.getDate()).padStart(2, '0') + '-' + months[d.getMonth()] + '-' + d.getFullYear();
   }
 
   function createResultItem(label, value, extraClass) {
@@ -273,14 +279,22 @@
     return div;
   }
 
-  document.getElementById('calculateBtn').addEventListener('click', function() {
+  function render(parentId, items) {
+    const parent = document.getElementById(parentId);
+    parent.innerHTML = '';
+    items.forEach(function(item) {
+      parent.appendChild(createResultItem(item.label, item.value, item.extraClass));
+    });
+  }
+
+  function calculate() {
     const errorContainer = document.getElementById('errorContainer');
     const warningContainer = document.getElementById('warningContainer');
-    const resultsSection = document.getElementById('resultsSection');
+    const placeholder = document.getElementById('placeholder');
+    const resultsCards = document.getElementById('resultsCards');
 
     errorContainer.style.display = 'none';
     warningContainer.style.display = 'none';
-    resultsSection.style.display = 'none';
 
     const totalCargo = evaluateExpression(document.getElementById('totalCargo').value);
     const loadedCargo = evaluateExpression(document.getElementById('loadedCargo').value);
@@ -289,32 +303,40 @@
     const stepsRemainingRaw = evaluateExpression(document.getElementById('stepsRemaining').value);
 
     if (totalCargo === null || loadedCargo === null || trimmingCargo === null || loadingRate === null || stepsRemainingRaw === null) {
-      errorContainer.textContent = 'Error: Invalid input. Only numbers and math operations (+, -, *, /, parentheses) are allowed.';
-      errorContainer.style.display = 'block';
+      placeholder.style.display = 'flex';
+      resultsCards.style.display = 'none';
       return;
     }
 
     if (loadingRate <= 0) {
       errorContainer.textContent = 'Error: Loading Rate must be greater than zero.';
       errorContainer.style.display = 'block';
+      placeholder.style.display = 'flex';
+      resultsCards.style.display = 'none';
       return;
     }
 
     if (loadedCargo > totalCargo) {
       errorContainer.textContent = 'Error: Loaded Cargo cannot be greater than Total Cargo.';
       errorContainer.style.display = 'block';
+      placeholder.style.display = 'flex';
+      resultsCards.style.display = 'none';
       return;
     }
 
     if (trimmingCargo < 0) {
       errorContainer.textContent = 'Error: Trimming Cargo cannot be negative.';
       errorContainer.style.display = 'block';
+      placeholder.style.display = 'flex';
+      resultsCards.style.display = 'none';
       return;
     }
 
     if (trimmingCargo > totalCargo) {
       errorContainer.textContent = 'Error: Trimming Cargo cannot be greater than Total Cargo.';
       errorContainer.style.display = 'block';
+      placeholder.style.display = 'flex';
+      resultsCards.style.display = 'none';
       return;
     }
 
@@ -322,14 +344,18 @@
     if (stepsRemaining < 1 || Math.abs(stepsRemainingRaw - stepsRemaining) > 0.0001) {
       errorContainer.textContent = 'Error: Steps Remaining must be an integer greater than or equal to 1.';
       errorContainer.style.display = 'block';
+      placeholder.style.display = 'flex';
+      resultsCards.style.display = 'none';
       return;
     }
 
     const cargoBeforeIntermediate = totalCargo - trimmingCargo;
 
     if (cargoBeforeIntermediate < loadedCargo) {
-      warningContainer.innerHTML = '<strong>Warning:</strong> The Intermediate point has already been passed.<br>Cargo before Intermediate: ' + fmt(cargoBeforeIntermediate) + ' MT<br>Current Loaded Cargo: ' + fmt(loadedCargo) + ' MT';
+      warningContainer.innerHTML = '<strong>Warning:</strong> The Intermediate point has already been passed.<br>Cargo before Intermediate: ' + fmt(cargoBeforeIntermediate) + ' MT &nbsp;|&nbsp; Current Loaded: ' + fmt(loadedCargo) + ' MT';
       warningContainer.style.display = 'block';
+      placeholder.style.display = 'flex';
+      resultsCards.style.display = 'none';
       return;
     }
 
@@ -342,11 +368,11 @@
     const timeToIntermediate = loadingTimeBeforeIntermediate + intermediateWaitingTime;
 
     const now = Date.now();
-    const completionSeconds = totalCompletionTime * 3600;
-    const intermediateSeconds = timeToIntermediate * 3600;
+    const completionMs = totalCompletionTime * 3600 * 1000;
+    const intermediateMs = timeToIntermediate * 3600 * 1000;
 
-    const etcTimestamp = now + completionSeconds * 1000;
-    const intermediateTimestamp = now + intermediateSeconds * 1000;
+    const etcTimestamp = now + completionMs;
+    const intermediateTimestamp = now + intermediateMs;
     const unberthingTimestamp = intermediateTimestamp + (4 * 3600 * 1000);
     const underwaterInspectionTimestamp = intermediateTimestamp + (6 * 3600 * 1000);
 
@@ -356,33 +382,44 @@
     const underwaterInspectionDatetime = formatDate(underwaterInspectionTimestamp);
     const etcDatetime = formatDate(etcTimestamp);
 
-    document.getElementById('inputSummary').innerHTML = '';
-    document.getElementById('inputSummary').appendChild(createResultItem('Total Cargo', fmt(totalCargo) + ' MT'));
-    document.getElementById('inputSummary').appendChild(createResultItem('Loaded Cargo', fmt(loadedCargo) + ' MT'));
-    document.getElementById('inputSummary').appendChild(createResultItem('Trimming Cargo', fmt(trimmingCargo) + ' MT'));
-    document.getElementById('inputSummary').appendChild(createResultItem('Cargo before Intermediate', fmt(cargoBeforeIntermediate) + ' MT'));
-    document.getElementById('inputSummary').appendChild(createResultItem('Loading Rate', fmt(loadingRate) + ' MT/h'));
-    document.getElementById('inputSummary').appendChild(createResultItem('Steps Remaining', String(stepsRemaining)));
+    render('inputSummary', [
+      { label: 'Total Cargo', value: fmt(totalCargo) + ' MT' },
+      { label: 'Loaded Cargo', value: fmt(loadedCargo) + ' MT' },
+      { label: 'Trimming Cargo', value: fmt(trimmingCargo) + ' MT' },
+      { label: 'Cargo before Intermediate', value: fmt(cargoBeforeIntermediate) + ' MT' },
+      { label: 'Loading Rate', value: fmt(loadingRate) + ' MT/h' },
+      { label: 'Steps Remaining', value: String(stepsRemaining) }
+    ]);
 
-    document.getElementById('etcCalculation').innerHTML = '';
-    document.getElementById('etcCalculation').appendChild(createResultItem('Loading Time', fmt(loadingTime) + ' hours'));
-    document.getElementById('etcCalculation').appendChild(createResultItem('Dead Time', fmt(deadTime) + ' hours'));
-    document.getElementById('etcCalculation').appendChild(createResultItem('Total Completion Time', fmt(totalCompletionTime) + ' hours', 'highlight'));
+    render('etcCalculation', [
+      { label: 'Loading Time', value: fmt(loadingTime) + ' hours' },
+      { label: 'Dead Time', value: fmt(deadTime) + ' hours' },
+      { label: 'Total Completion Time', value: fmt(totalCompletionTime) + ' hours', extraClass: 'highlight' }
+    ]);
 
-    document.getElementById('intermediateCalc').innerHTML = '';
-    document.getElementById('intermediateCalc').appendChild(createResultItem('Loading Time before Intermediate', fmt(loadingTimeBeforeIntermediate) + ' hours'));
-    document.getElementById('intermediateCalc').appendChild(createResultItem('Intermediate Waiting Time', fmt(intermediateWaitingTime) + ' hours'));
-    document.getElementById('intermediateCalc').appendChild(createResultItem('Total Time to Intermediate', fmt(timeToIntermediate) + ' hours', 'highlight'));
+    render('intermediateCalc', [
+      { label: 'Loading Time before Intermediate', value: fmt(loadingTimeBeforeIntermediate) + ' hours' },
+      { label: 'Intermediate Waiting Time', value: fmt(intermediateWaitingTime) + ' hours' },
+      { label: 'Total Time to Intermediate', value: fmt(timeToIntermediate) + ' hours', extraClass: 'highlight' }
+    ]);
 
-    document.getElementById('estimatedTimes').innerHTML = '';
-    document.getElementById('estimatedTimes').appendChild(createResultItem('Current Time', currentDatetime));
-    document.getElementById('estimatedTimes').appendChild(createResultItem('Estimated Intermediate Time', intermediateDatetime));
-    document.getElementById('estimatedTimes').appendChild(createResultItem('Estimated Unberthing Time', unberthingDatetime));
-    document.getElementById('estimatedTimes').appendChild(createResultItem('Underwater Inspection Time', underwaterInspectionDatetime));
-    document.getElementById('estimatedTimes').appendChild(createResultItem('ETC - Estimated Completion', etcDatetime, 'highlight'));
+    render('estimatedTimes', [
+      { label: 'Current Time', value: currentDatetime },
+      { label: 'Estimated Intermediate Time', value: intermediateDatetime },
+      { label: 'Estimated Unberthing Time', value: unberthingDatetime },
+      { label: 'Underwater Inspection Time', value: underwaterInspectionDatetime },
+      { label: 'ETC - Estimated Completion', value: etcDatetime, extraClass: 'highlight' }
+    ]);
 
-    resultsSection.style.display = 'block';
-    resultsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    placeholder.style.display = 'none';
+    resultsCards.style.display = 'block';
+  }
+
+  document.addEventListener('DOMContentLoaded', function() {
+    var inputs = document.querySelectorAll('.form-row input');
+    for (var i = 0; i < inputs.length; i++) {
+      inputs[i].addEventListener('input', calculate);
+    }
   });
 </script>
 </body>
