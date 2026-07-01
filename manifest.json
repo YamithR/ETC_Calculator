@@ -1,0 +1,16 @@
+{
+  "name": "ETC Calculator",
+  "short_name": "ETC Calc",
+  "description": "Estimated Cargo Completion Time Calculator",
+  "start_url": "index.html",
+  "display": "standalone",
+  "background_color": "#f5f0e8",
+  "theme_color": "#1a3a5c",
+  "icons": [
+    {
+      "src": "assets/icon.png",
+      "sizes": "256x256",
+      "type": "image/png"
+    }
+  ]
+}

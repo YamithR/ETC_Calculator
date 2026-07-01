@@ -1,0 +1,9 @@
+{
+  "appId": "com.yamithr.etccalculator",
+  "appName": "ETC Calculator",
+  "webDir": "www",
+  "bundledWebRuntime": false,
+  "server": {
+    "androidScheme": "file"
+  }
+}

@@ -32,6 +32,7 @@ Este proyecto tiene **tres versiones** paralelas:
 | 🌐 Web Prototype | Cualquier navegador | `index.html` |
 | 🖥️ Desktop (Electron) | Linux (.deb) / Windows (.exe) | `main.js` + `preload.js` + `package.json` |
 | 🧩 GNOME Shell Extension | Linux con GNOME 45+ | `etc-calculator@yamithr/` |
+| 🤖 Android (.apk) | Android 12+ | `index.html` + `capacitor.config.json` |
 
 ---
 
@@ -117,41 +118,45 @@ journalctl -o cat /usr/bin/gnome-shell -f
 
 ---
 
-## Desktop App (Electron)
+## Android App (Capacitor)
+
+Aplicación Android nativa generada con [Capacitor](https://capacitorjs.com/) a partir del mismo `index.html`.
 
 ### Requisitos
 
 - Node.js >= 22
 - npm >= 10
+- **Android Studio** (instalado vía `sudo snap install android-studio --classic`)
 
-### Instalación
-
-```bash
-npm install
-```
-
-### Ejecutar
+### Preparar el proyecto Android
 
 ```bash
-npm start
+# Sincronizar web app con proyecto Android
+npx cap sync
+
+# Abrir en Android Studio para build
+npx cap open android
 ```
 
-### Empaquetar
+### Build del .apk desde terminal
 
 ```bash
-# Linux (.deb)
-npm run build:linux
-
-# Windows (.exe)
-npm run build:win
+cd android
+./gradlew assembleDebug
 ```
 
-Los artefactos se generan en la carpeta `dist/`.
+El `.apk` se genera en:
+```
+android/app/build/outputs/apk/debug/app-debug.apk
+```
+
+> **Nota:** La primera vez que builds, Gradle descarga dependencias (~300 MB). Asegúrate de tener buena conexión a internet.
 
 ---
 
 ## Tecnologías
 
+- 🤖 **Android:** [Capacitor](https://capacitorjs.com/) + WebView nativo
 - 🧩 **GNOME Shell Extension:** GJS + St (GNOME Shell Toolkit)
 - 🖥️ **Desktop:** [Electron](https://www.electronjs.org/) + [electron-builder](https://www.electron.build/)
 - 🌐 **Web:** HTML / CSS / JavaScript vanilla
