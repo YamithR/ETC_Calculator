@@ -34,15 +34,39 @@
     },
     "win": {
       "target": [
-        "portable"
+        "msi"
       ],
       "icon": "assets/icon.png",
       "artifactName": "ETC_Calculator_${version}_win64.${ext}",
       "signAndEditExecutable": false
-    }
+    },
+    "msi": {
+      "oneClick": false,
+      "perMachine": true,
+      "runAfterFinish": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "ETC Calculator"
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "ETC Calculator",
+      "installerIcon": "assets/icon.png"
+    },
+    "extraResources": [
+      "assets/**"
+    ]
   },
   "devDependencies": {
     "electron": "^35.7.5",
     "electron-builder": "^25.1.8"
+  },
+  "dependencies": {
+    "@capacitor/android": "^8.4.1",
+    "@capacitor/cli": "^8.4.1",
+    "@capacitor/core": "^8.4.1"
   }
 }

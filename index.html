@@ -2,8 +2,12 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 <title>ETC Calculator</title>
+<link rel="manifest" href="manifest.json">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#1a3a5c">
 <style>
   *, *::before, *::after {
     box-sizing: border-box;
@@ -176,6 +180,10 @@
     header { padding: 1rem 1.25rem; }
     header h1 { font-size: 1.25rem; }
     .result-grid { grid-template-columns: 1fr; }
+    .form-row input { min-height: 44px; font-size: 16px; }
+    .form-row label { font-size: 0.9rem; }
+    .btn { min-height: 48px; font-size: 1.1rem; }
+    .result-item { font-size: 0.9rem; padding: 0.5rem 0; }
   }
 </style>
 </head>
