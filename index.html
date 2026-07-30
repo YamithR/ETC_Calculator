@@ -273,6 +273,28 @@
     font-size: 0.9rem;
     text-align: center;
   }
+  .dark-theme body,
+  body.dark-theme {
+    background: #1a1a2e;
+    color: #e0e0e0;
+  }
+  .dark-theme .card { background: #16213e; color: #e0e0e0; }
+  .dark-theme .card-title { color: #a8d8ea; }
+  .dark-theme .form-row label { color: #bbb; }
+  .dark-theme .form-row input { background: #0f3460; border: 1px solid #1a5276; color: #e0e0e0; }
+  .dark-theme .result-item .label { color: #aaa; }
+  .dark-theme .result-item .value { color: #a8d8ea; }
+  .dark-theme .modal-content { background: #16213e; color: #e0e0e0; }
+  .dark-theme .modal-header { border-bottom: 1px solid #1a5276; }
+  .dark-theme .setting-row { border-bottom: 1px solid #1a5276; }
+  .dark-theme .setting-row label { color: #bbb; }
+  .dark-theme .shortcut-input { background: #0f3460; border: 1px solid #1a5276; color: #e0e0e0; }
+  .dark-theme .modal-btn { background: #0f3460; border: 1px solid #1a5276; color: #ccc; }
+  .dark-theme .error-msg { background: #2d1b1b; }
+  .dark-theme .warning { background: #2d2510; }
+  .dark-theme .hint { color: #777; }
+  .dark-theme footer { color: #777; }
+  .dark-theme .modal-close { color: #888; }
   @media (max-width: 800px) {
     body { padding: 1rem 0.75rem; }
     .layout { flex-direction: column; }
@@ -399,6 +421,7 @@
   let appConfig = {};
 
   window.electronAPI.getConfig().then(c => { appConfig = c; applyConfigUI(); });
+  let aboutShortcutHandler = null;
 
   function applyConfigUI() {
     document.getElementById('shortcutInput').value = appConfig['shortcut-key'] || 'Ctrl+Shift+E';
@@ -407,35 +430,11 @@
   }
 
   function applyDarkTheme() {
-    document.body.style.background = '#1a1a2e';
-    document.body.style.color = '#e0e0e0';
-    document.querySelectorAll('.card').forEach(el => {
-      el.style.background = '#16213e';
-      el.style.color = '#e0e0e0';
-    });
-    document.querySelectorAll('.card-title').forEach(el => el.style.color = '#a8d8ea');
-    document.querySelectorAll('.form-row label').forEach(el => el.style.color = '#bbb');
-    document.querySelectorAll('.form-row input').forEach(el => {
-      el.style.background = '#0f3460';
-      el.style.border = '1px solid #1a5276';
-      el.style.color = '#e0e0e0';
-    });
-    document.querySelectorAll('.result-item .label').forEach(el => el.style.color = '#aaa');
-    document.querySelectorAll('.result-item .value').forEach(el => el.style.color = '#a8d8ea');
-    document.querySelectorAll('.modal-content').forEach(el => {
-      el.style.background = '#16213e';
-      el.style.color = '#e0e0e0';
-    });
-    document.querySelectorAll('.modal-header').forEach(el => el.style.borderBottom = '1px solid #1a5276');
-    document.querySelectorAll('.setting-row').forEach(el => el.style.borderBottom = '1px solid #1a5276');
-    document.querySelectorAll('.setting-row label').forEach(el => el.style.color = '#bbb');
-    document.querySelectorAll('.shortcut-input').forEach(el => { el.style.background = '#0f3460'; el.style.border = '1px solid #1a5276'; el.style.color = '#e0e0e0'; });
-    document.querySelectorAll('.modal-btn').forEach(el => { el.style.background = '#0f3460'; el.style.border = '1px solid #1a5276'; el.style.color = '#ccc'; });
-    document.querySelectorAll('.error-msg').forEach(el => el.style.background = '#2d1b1b');
-    document.querySelectorAll('.warning').forEach(el => el.style.background = '#2d2510');
-    document.querySelectorAll('.hint').forEach(el => el.style.color = '#777');
-    document.querySelectorAll('footer').forEach(el => el.style.color = '#777');
-    document.querySelectorAll('.modal-close').forEach(el => el.style.color = '#888');
+    document.body.classList.add('dark-theme');
+  }
+
+  function applyLightTheme() {
+    document.body.classList.remove('dark-theme');
   }
 
   function startShortcutListen() {
@@ -479,10 +478,14 @@
         '<div class="ab-section">Atajo de teclado global</div>' +
         '<div><button id="aboutShortcutBtn" class="modal-btn">Configurar atajo</button></div>';
       document.getElementById('aboutModal').classList.remove('hidden');
-      document.getElementById('aboutShortcutBtn').addEventListener('click', function() {
+      if (aboutShortcutHandler) {
+        document.getElementById('aboutShortcutBtn').removeEventListener('click', aboutShortcutHandler);
+      }
+      aboutShortcutHandler = function() {
         document.getElementById('aboutModal').classList.add('hidden');
         document.getElementById('settingsModal').classList.remove('hidden');
-      });
+      };
+      document.getElementById('aboutShortcutBtn').addEventListener('click', aboutShortcutHandler);
     });
   });
 
@@ -516,16 +519,16 @@
     if (theme === 'dark') {
       applyDarkTheme();
     } else {
-      location.reload();
+      applyLightTheme();
     }
   });
 
   function evaluateExpression(input) {
-    const cleaned = input.replace(/,/g, '.').replace(/\s/g, '');
-    if (!cleaned) return null;
-    if (!/^[\d+\-*/().]+$/.test(cleaned)) return null;
+    const s = input.replace(/,/g, '.').replace(/\s/g, '');
+    if (!s) return null;
+    if (!/^[\d+\-*/().]+$/.test(s)) return null;
     try {
-      const result = Function('"use strict"; return (' + cleaned + ')')();
+      const result = Function('"use strict"; return (' + s + ')')();
       if (typeof result !== 'number' || !isFinite(result)) return null;
       return result;
     } catch {
