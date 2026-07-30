@@ -29,6 +29,11 @@
     width: 100%;
     max-width: 1100px;
   }
+  .header-wrap {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
   header {
     background: #1a3a5c;
     color: #fff;
@@ -47,6 +52,102 @@
     opacity: 0.8;
     margin-top: 0.25rem;
   }
+  .info-btn {
+    cursor: pointer;
+    font-size: 1.2rem;
+    opacity: 0.7;
+    padding: 0 6px;
+    -webkit-app-region: no-drag;
+  }
+  .info-btn:hover {
+    opacity: 1;
+  }
+  .modal {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+  }
+  .modal-content {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+    width: 320px;
+    max-height: 80vh;
+    overflow-y: auto;
+    padding: 0;
+  }
+  .modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 16px;
+    border-bottom: 1px solid #eee;
+    font-weight: 600;
+    font-size: 0.95rem;
+  }
+  .modal-close {
+    cursor: pointer;
+    font-size: 1.2rem;
+    color: #999;
+    line-height: 1;
+  }
+  .modal-close:hover {
+    color: #d32f2f;
+  }
+  .modal-body {
+    padding: 14px 16px;
+    font-size: 0.85rem;
+    line-height: 1.6;
+  }
+  .setting-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 0;
+    border-bottom: 1px solid #f0ede8;
+  }
+  .setting-row label {
+    flex: 1;
+    font-size: 0.85rem;
+    color: #444;
+  }
+  .shortcut-input {
+    padding: 4px 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    font-family: monospace;
+    width: 120px;
+    text-align: center;
+    outline: none;
+    cursor: pointer;
+    background: #f9f9f9;
+  }
+  .shortcut-input:focus {
+    border-color: #1a3a5c;
+  }
+  .modal-btn {
+    padding: 4px 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background: #f5f5f5;
+    cursor: pointer;
+    font-size: 0.8rem;
+    white-space: nowrap;
+  }
+  .modal-btn:hover {
+    background: #e8e8e8;
+  }
+  .ab-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 2px; }
+  .ab-version { color: #999; margin-bottom: 6px; }
+  .ab-section { color: #1a3a5c; margin-top: 8px; margin-bottom: 2px; font-weight: 600; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px; }
+  .ab-link { color: #1a3a5c; text-decoration: none; }
+  .ab-link:hover { text-decoration: underline; }
+  .hidden { display: none !important; }
   .layout {
     display: flex;
     gap: 1.5rem;
@@ -190,8 +291,13 @@
 <body>
 <div class="container">
   <header>
-    <h1>ETC Calculator</h1>
-    <p>Estimated Cargo Completion Time</p>
+    <div class="header-wrap">
+      <div>
+        <h1>ETC Calculator</h1>
+        <p>Estimated Cargo Completion Time</p>
+      </div>
+      <div class="info-btn" id="infoBtn" title="Acerca de / Configuración">ⓘ</div>
+    </div>
   </header>
 
   <div class="layout">
@@ -253,10 +359,165 @@
     </div>
   </div>
 
+  <div id="settingsModal" class="modal hidden">
+    <div class="modal-content">
+      <div class="modal-header">
+        <span>Configuración</span>
+        <span class="modal-close" id="settingsClose">&times;</span>
+      </div>
+      <div class="modal-body">
+        <div class="setting-row">
+          <label>Atajo de teclado (global)</label>
+          <input type="text" id="shortcutInput" class="shortcut-input" readonly
+                 placeholder="Presiona..."
+                 value="Ctrl+Shift+E">
+          <button id="shortcutBtn" class="modal-btn">Cambiar</button>
+        </div>
+        <div class="setting-row">
+          <label>Tema oscuro</label>
+          <input type="checkbox" id="themeToggle">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="aboutModal" class="modal hidden">
+    <div class="modal-content">
+      <div class="modal-header">
+        <span>Acerca de</span>
+        <span class="modal-close" id="aboutClose">&times;</span>
+      </div>
+      <div class="modal-body" id="aboutContent"></div>
+    </div>
+  </div>
+
   <footer>ETC Calculator v1.0.0</footer>
 </div>
 
 <script>
+  let listeningForShortcut = false;
+  let appConfig = {};
+
+  window.electronAPI.getConfig().then(c => { appConfig = c; applyConfigUI(); });
+
+  function applyConfigUI() {
+    document.getElementById('shortcutInput').value = appConfig['shortcut-key'] || 'Ctrl+Shift+E';
+    document.getElementById('themeToggle').checked = appConfig.theme === 'dark';
+    if (appConfig.theme === 'dark') applyDarkTheme();
+  }
+
+  function applyDarkTheme() {
+    document.body.style.background = '#1a1a2e';
+    document.body.style.color = '#e0e0e0';
+    document.querySelectorAll('.card').forEach(el => {
+      el.style.background = '#16213e';
+      el.style.color = '#e0e0e0';
+    });
+    document.querySelectorAll('.card-title').forEach(el => el.style.color = '#a8d8ea');
+    document.querySelectorAll('.form-row label').forEach(el => el.style.color = '#bbb');
+    document.querySelectorAll('.form-row input').forEach(el => {
+      el.style.background = '#0f3460';
+      el.style.border = '1px solid #1a5276';
+      el.style.color = '#e0e0e0';
+    });
+    document.querySelectorAll('.result-item .label').forEach(el => el.style.color = '#aaa');
+    document.querySelectorAll('.result-item .value').forEach(el => el.style.color = '#a8d8ea');
+    document.querySelectorAll('.modal-content').forEach(el => {
+      el.style.background = '#16213e';
+      el.style.color = '#e0e0e0';
+    });
+    document.querySelectorAll('.modal-header').forEach(el => el.style.borderBottom = '1px solid #1a5276');
+    document.querySelectorAll('.setting-row').forEach(el => el.style.borderBottom = '1px solid #1a5276');
+    document.querySelectorAll('.setting-row label').forEach(el => el.style.color = '#bbb');
+    document.querySelectorAll('.shortcut-input').forEach(el => { el.style.background = '#0f3460'; el.style.border = '1px solid #1a5276'; el.style.color = '#e0e0e0'; });
+    document.querySelectorAll('.modal-btn').forEach(el => { el.style.background = '#0f3460'; el.style.border = '1px solid #1a5276'; el.style.color = '#ccc'; });
+    document.querySelectorAll('.error-msg').forEach(el => el.style.background = '#2d1b1b');
+    document.querySelectorAll('.warning').forEach(el => el.style.background = '#2d2510');
+    document.querySelectorAll('.hint').forEach(el => el.style.color = '#777');
+    document.querySelectorAll('footer').forEach(el => el.style.color = '#777');
+    document.querySelectorAll('.modal-close').forEach(el => el.style.color = '#888');
+  }
+
+  function startShortcutListen() {
+    listeningForShortcut = true;
+    document.getElementById('shortcutInput').value = 'Presiona...';
+    document.getElementById('shortcutInput').focus();
+  }
+
+  document.addEventListener('keydown', function(e) {
+    if (listeningForShortcut) {
+      e.preventDefault();
+      var parts = [];
+      if (e.ctrlKey) parts.push('Ctrl');
+      if (e.altKey) parts.push('Alt');
+      if (e.shiftKey) parts.push('Shift');
+      var key = e.key;
+      if (!['Control', 'Alt', 'Shift', 'Meta'].includes(key)) {
+        parts.push(key.length === 1 ? key.toUpperCase() : key);
+        var shortcut = parts.join('+');
+        document.getElementById('shortcutInput').value = shortcut;
+        listeningForShortcut = false;
+        appConfig['shortcut-key'] = shortcut;
+        window.electronAPI.setConfig({ 'shortcut-key': shortcut });
+      }
+    }
+  });
+
+  document.getElementById('infoBtn').addEventListener('click', function() {
+    window.electronAPI.getAppInfo().then(function(info) {
+      document.getElementById('aboutContent').innerHTML =
+        '<div class="ab-title">' + info.name + '</div>' +
+        '<div class="ab-version">v' + info.version + '</div>' +
+        '<div>' + info.description + '</div>' +
+        '<div class="ab-section">Desarrollador</div>' +
+        '<div>' + info.author + '</div>' +
+        '<div><a href="mailto:' + info.email + '" class="ab-link">' + info.email + '</a></div>' +
+        '<div class="ab-section">Repositorio</div>' +
+        '<div><a href="' + info.repo + '" class="ab-link" target="_blank">' + info.repo + '</a></div>' +
+        '<div class="ab-section">Atajo de teclado global</div>' +
+        '<div><button id="aboutShortcutBtn" class="modal-btn">Configurar atajo</button></div>';
+      document.getElementById('aboutModal').classList.remove('hidden');
+      document.getElementById('aboutShortcutBtn').addEventListener('click', function() {
+        document.getElementById('aboutModal').classList.add('hidden');
+        document.getElementById('settingsModal').classList.remove('hidden');
+      });
+    });
+  });
+
+  document.getElementById('aboutClose').addEventListener('click', function() {
+    document.getElementById('aboutModal').classList.add('hidden');
+  });
+
+  document.getElementById('aboutModal').addEventListener('click', function(e) {
+    if (e.target === document.getElementById('aboutModal')) {
+      document.getElementById('aboutModal').classList.add('hidden');
+    }
+  });
+
+  document.getElementById('settingsClose').addEventListener('click', function() {
+    document.getElementById('settingsModal').classList.add('hidden');
+  });
+
+  document.getElementById('settingsModal').addEventListener('click', function(e) {
+    if (e.target === document.getElementById('settingsModal')) {
+      document.getElementById('settingsModal').classList.add('hidden');
+    }
+  });
+
+  document.getElementById('shortcutBtn').addEventListener('click', startShortcutListen);
+  document.getElementById('shortcutInput').addEventListener('click', startShortcutListen);
+
+  document.getElementById('themeToggle').addEventListener('change', function() {
+    var theme = this.checked ? 'dark' : 'light';
+    appConfig.theme = theme;
+    window.electronAPI.setConfig({ theme: theme });
+    if (theme === 'dark') {
+      applyDarkTheme();
+    } else {
+      location.reload();
+    }
+  });
+
   function evaluateExpression(input) {
     const cleaned = input.replace(/,/g, '.').replace(/\s/g, '');
     if (!cleaned) return null;
