@@ -10,7 +10,7 @@
   },
   "author": {
     "name": "Yamith Romero",
-    "email": "yamithr@users.noreply.github.com"
+    "email": "yamithromero@hotmail.com"
   },
   "license": "MIT",
   "build": {
@@ -30,7 +30,7 @@
       ],
       "category": "Office",
       "icon": "assets/icon.png",
-      "maintainer": "Yamith Romero <yamithr@users.noreply.github.com>"
+      "maintainer": "Yamith Romero <yamithromero@hotmail.com>"
     },
     "win": {
       "target": [

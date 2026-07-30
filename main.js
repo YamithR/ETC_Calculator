@@ -103,7 +103,7 @@ ipcMain.handle('get-app-info', () => ({
   version: '1.1.0',
   description: 'Calculadora de tiempo estimado de carga de graneles (ETC)',
   author: 'Yamith Romero',
-  email: 'yamithr@users.noreply.github.com',
+  email: 'yamithromero@hotmail.com',
   github: 'https://github.com/YamithR',
   repo: 'https://github.com/YamithR/ETC_Calculator'
 }));
